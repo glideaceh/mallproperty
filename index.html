@@ -14,25 +14,23 @@
             margin: 0;
             padding: 0;
         }
-        body {
-            font-family: 'Inter', sans-serif;
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Mencegah scrollbar ganda pada window browser */
             background-color: #f1f5f9;
-            min-height: 100vh;
+            font-family: 'Inter', sans-serif;
+        }
+        body {
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        @media (min-width: 640px) {
-            body {
-                padding-top: 24px;
-                padding-bottom: 24px;
-            }
         }
 
         /* Mobile Device Container Frame */
         .phone-container {
             width: 100%;
-            height: 100vh;
+            height: 100%;
             background-color: #f8fafc;
             position: relative;
             overflow: hidden;
@@ -42,10 +40,9 @@
         @media (min-width: 640px) {
             .phone-container {
                 max-width: 430px;
-                height: auto;
-                min-height: 880px;
-                max-height: 920px;
-                border-radius: 45px;
+                height: 90vh;
+                max-height: 880px;
+                border-radius: 40px;
                 box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
                 border: 10px solid #0f172a;
             }
@@ -63,23 +60,12 @@
             color: #ffffff;
             z-index: 30;
             user-select: none;
+            flex-shrink: 0;
         }
         @media (min-width: 640px) {
             .status-bar {
                 display: flex;
             }
-        }
-
-        /* Scrollable App Content Area */
-        .scroll-content {
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 24px;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .scroll-content::-webkit-scrollbar {
-            display: none;
         }
 
         /* Top Header */
@@ -89,10 +75,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            position: sticky;
-            top: 0;
             z-index: 20;
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
         }
         .logo-wrapper {
             display: flex;
@@ -173,6 +158,18 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        /* Scrollable App Content Area */
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 80px; /* Beri jarak bawah agar konten tidak tertutup bottom navbar */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scroll-content::-webkit-scrollbar {
+            display: none;
         }
 
         /* Search Bar Section */
@@ -632,22 +629,22 @@
             box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
         }
 
-        /* Bottom Navigation Bar */
+        /* Bottom Navigation Bar (PERBAIKAN: Posisi Absolute Kunci di Bawah Frame) */
         .bottom-nav {
-            position: sticky;
+            position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
+            height: 64px;
             background-color: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(12px);
             border-top: 1px solid #e2e8f0;
-            padding: 10px 24px;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 30;
+            z-index: 40;
             box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
-            flex-shrink: 0;
         }
         .nav-btn {
             display: flex;
@@ -1078,32 +1075,32 @@
             </div>
         </div>
 
+        <!-- Top Header -->
+        <header class="app-header">
+            <div class="logo-wrapper">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+                <div>
+                    <h1 class="app-title">
+                        Rumah<span>Kita</span>
+                    </h1>
+                    <p class="app-subtitle">Temukan Rumah Impianmu</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button onclick="showToast('Tidak ada pemberitahuan baru')" class="bell-btn">
+                    <i class="fa-regular fa-bell" style="font-size: 16px;"></i>
+                    <span class="bell-badge"></span>
+                </button>
+                <div class="avatar-container" onclick="showToast('Profil: Pengguna RumahKita')">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
+                </div>
+            </div>
+        </header>
+
         <!-- Scrollable App Content Area -->
         <div class="scroll-content">
-
-            <!-- Top Header -->
-            <header class="app-header">
-                <div class="logo-wrapper">
-                    <div class="logo-icon">
-                        <i class="fa-solid fa-house"></i>
-                    </div>
-                    <div>
-                        <h1 class="app-title">
-                            Rumah<span>Kita</span>
-                        </h1>
-                        <p class="app-subtitle">Temukan Rumah Impianmu</p>
-                    </div>
-                </div>
-                <div class="header-actions">
-                    <button onclick="showToast('Tidak ada pemberitahuan baru')" class="bell-btn">
-                        <i class="fa-regular fa-bell" style="font-size: 16px;"></i>
-                        <span class="bell-badge"></span>
-                    </button>
-                    <div class="avatar-container" onclick="showToast('Profil: Pengguna RumahKita')">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
-                    </div>
-                </div>
-            </header>
 
             <!-- Search Bar Section -->
             <div class="search-section">
@@ -1325,7 +1322,7 @@
 
         </div>
 
-        <!-- Bottom Navigation Bar -->
+        <!-- Bottom Navigation Bar (Fixed Bottom Absolute) -->
         <nav class="bottom-nav">
             <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-btn active">
                 <i class="fa-solid fa-house nav-icon"></i>
@@ -1769,7 +1766,6 @@
             document.getElementById('sidebarBadge').textContent = badgeText;
             document.getElementById('sidebarDesc').textContent = description;
 
-            // Sinkronisasi otomatis ke Kalkulator KPR
             const numericPrice = parsePriceToNumber(price);
             const kprHargaInput = document.getElementById('kprHarga');
             if (kprHargaInput) {
