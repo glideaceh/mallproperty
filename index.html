@@ -1,0 +1,2132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>RumahKita - Temukan Rumah Impianmu</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (min-width: 640px) {
+            body {
+                padding-top: 24px;
+                padding-bottom: 24px;
+            }
+        }
+
+        /* Mobile Device Container Frame */
+        .phone-container {
+            width: 100%;
+            height: 100vh;
+            background-color: #f8fafc;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        @media (min-width: 640px) {
+            .phone-container {
+                max-width: 430px;
+                height: auto;
+                min-height: 880px;
+                max-height: 920px;
+                border-radius: 45px;
+                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+                border: 10px solid #0f172a;
+            }
+        }
+
+        /* Phone Status Bar */
+        .status-bar {
+            display: none;
+            background-color: #38bdf8;
+            padding: 12px 24px 4px 24px;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            z-index: 30;
+            user-select: none;
+        }
+        @media (min-width: 640px) {
+            .status-bar {
+                display: flex;
+            }
+        }
+
+        /* Scrollable App Content Area */
+        .scroll-content {
+            flex: 1;
+            overflow-y: auto;
+            padding-bottom: 24px;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .scroll-content::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Top Header (Gradient Biru-Putih Awan & Langit) */
+        .app-header {
+            background: linear-gradient(to bottom, #38bdf8, #e0f2fe, #ffffff);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #fbbf24);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
+            color: white;
+            font-size: 18px;
+        }
+        .app-title {
+            font-size: 20px;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.025em;
+            display: flex;
+            align-items: center;
+        }
+        .app-title span {
+            color: #2563eb;
+        }
+        .app-subtitle {
+            font-size: 11px;
+            color: #475569;
+            font-weight: 500;
+        }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .bell-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            border: 1px solid #f1f5f9;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+        .bell-btn:hover {
+            background-color: #ffffff;
+        }
+        .bell-badge {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            border: 2px solid #ffffff;
+        }
+        .avatar-container {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #3b82f6;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Search Bar Section */
+        .search-section {
+            padding: 12px 24px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+       .search-icon-wrapper {
+    position: absolute;
+    top: 50%;                   
+    left: 16px;                 
+    transform: translateY(-50%); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: #94a3b8;
+    font-size: 14px;
+    height: 20px;                 /* Menyamakan tinggi area ikon */
+}
+        .search-input {
+            width: 100%;
+            padding-left: 44px;
+            padding-right: 16px;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            background-color: #f1f5f9;
+            border-radius: 16px;
+            font-size: 14px;
+            color: #1e293b;
+            border: none;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .search-input::placeholder {
+            color: #94a3b8;
+        }
+        .search-input:focus {
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.5);
+            background-color: #ffffff;
+        }
+        .filter-btn {
+            width: 48px;
+            height: 48px;
+            background-color: #2563eb;
+            color: #ffffff;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .filter-btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Hero Promotional Banner */
+        .banner-wrapper {
+            padding: 12px 24px;
+        }
+        .banner-card {
+            position: relative;
+            border-radius: 24px;
+            padding: 20px;
+            color: #ffffff;
+            overflow: hidden;
+            box-shadow: 0 20px 25px -5px rgba(37, 99, 235, 0.2);
+            transition: all 0.5s ease;
+        }
+        .banner-bg-shape {
+            position: absolute;
+            right: -40px;
+            bottom: -40px;
+            width: 192px;
+            height: 192px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            filter: blur(24px);
+            pointer-events: none;
+        }
+        .banner-content-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        .banner-text-side {
+            max-width: 55%;
+        }
+        .banner-title {
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-bottom: 4px;
+            color: #ffffff;
+            transition: opacity 0.3s;
+        }
+        .banner-subtitle {
+            font-size: 11px;
+            font-weight: 400;
+            margin-bottom: 12px;
+            line-height: 1.4;
+            transition: opacity 0.3s;
+        }
+        .banner-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s, background 0.2s;
+        }
+        .banner-btn:active {
+            transform: scale(0.95);
+        }
+        .banner-img-side {
+            width: 45%;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .banner-img {
+            width: 144px;
+            height: 112px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transform: rotate(2deg);
+            transition: opacity 0.3s;
+        }
+        .banner-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 16px;
+        }
+
+        /* Categories Section */
+        .categories-wrapper {
+            padding: 12px 24px;
+        }
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .category-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        .category-icon-box {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+        .category-btn:hover .category-icon-box {
+            transform: translateY(-2px);
+        }
+        .category-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #334155;
+            margin-top: 6px;
+            text-align: center;
+        }
+
+        /* Proyek Populer Section */
+        .projects-section {
+            margin-top: 24px;
+            margin-bottom: 8px;
+        }
+        .section-header-flex {
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .section-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .section-icon-box {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background-color: #dbeafe;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2563eb;
+            font-size: 12px;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .see-all-btn {
+            font-size: 12px;
+            font-weight: 700;
+            color: #2563eb;
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .see-all-btn:hover {
+            color: #1d4ed8;
+        }
+        .horizontal-cards {
+            padding: 0 24px;
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            padding-bottom: 12px;
+        }
+        .horizontal-cards::-webkit-scrollbar {
+            display: none;
+        }
+        .property-card {
+            width: 210px;
+            flex-shrink: 0;
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f1f5f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .property-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.15);
+        }
+        .property-img-wrapper {
+            position: relative;
+            height: 128px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .property-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .property-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+        .property-name {
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 14px;
+            line-height: 1.25;
+            margin-bottom: 4px;
+        }
+        .property-location {
+            font-size: 11px;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+        .property-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .property-price-label {
+            font-size: 10px;
+            color: #94a3b8;
+            display: block;
+        }
+        .property-price {
+            font-size: 12px;
+            font-weight: 800;
+            color: #2563eb;
+        }
+        .property-action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: #eff6ff;
+            color: #2563eb;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .property-action-btn:hover {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+        /* Lower Trust Banner */
+        .trust-banner-wrapper {
+            padding: 12px 24px;
+            margin: 16px 0;
+        }
+        .trust-banner-box {
+            background: linear-gradient(to right, #1e3a8a, #1e40af, #312e81);
+            border-radius: 16px;
+            padding: 16px;
+            color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .trust-banner-blur {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 128px;
+            height: 128px;
+            background-color: rgba(59, 130, 246, 0.1);
+            border-radius: 50%;
+            filter: blur(16px);
+            pointer-events: none;
+        }
+        .trust-content-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+            z-index: 10;
+        }
+        .trust-icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background-color: rgba(37, 99, 235, 0.5);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #34d399;
+            font-size: 20px;
+            flex-shrink: 0;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .trust-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+        .trust-desc {
+            font-size: 10px;
+            color: #bfdbfe;
+            line-height: 1.25;
+        }
+        .trust-btn {
+            position: relative;
+            z-index: 10;
+            background-color: #fbbf24;
+            color: #0f172a;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 8px 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            flex-shrink: 0;
+        }
+        .trust-btn:hover {
+            background-color: #f59e0b;
+        }
+
+        /* Bottom Tab Categories Section (Posisi Paling Bawah) */
+        .bottom-category-section {
+            margin-top: 16px;
+            margin-bottom: 24px;
+        }
+        .tab-scroll-header {
+            display: flex;
+            gap: 8px;
+            padding: 0 24px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            margin-bottom: 14px;
+        }
+        .tab-scroll-header::-webkit-scrollbar {
+            display: none;
+        }
+        .tab-chip-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+            border: 1px solid #e2e8f0;
+            background-color: #ffffff;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        .tab-chip-btn.active {
+            background-color: #2563eb;
+            color: #ffffff;
+            border-color: #2563eb;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+        }
+
+        /* Bottom Navigation Bar (Sticky Positioned) */
+        .bottom-nav {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid #e2e8f0;
+            padding: 10px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 30;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+            flex-shrink: 0;
+        }
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .nav-btn.active {
+            color: #2563eb;
+        }
+        .nav-btn.inactive {
+            color: #94a3b8;
+        }
+        .nav-btn.inactive:hover {
+            color: #475569;
+        }
+        .nav-icon {
+            font-size: 18px;
+        }
+        .nav-label-active {
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+        .nav-label-inactive {
+            font-size: 10px;
+            font-weight: 500;
+            margin-top: 4px;
+        }
+
+        /* Modern Right Side Drawer / Sidebar Detail Properti */
+        .sidebar-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 100;
+            display: flex;
+            justify-content: flex-end;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .sidebar-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .sidebar-panel {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 480px;
+            height: 100%;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .sidebar-overlay.active .sidebar-panel {
+            transform: translateX(0);
+        }
+
+        /* Background Fixed Image di belakang container putih */
+        .sidebar-bg-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 240px;
+            z-index: 1;
+            background-color: #0f172a;
+        }
+        .sidebar-bg-header img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.2s ease;
+        }
+
+        /* Efek Animasi Gelap saat Scroll */
+        .sidebar-dark-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0);
+            pointer-events: none;
+            transition: background-color 0.05s linear;
+        }
+
+        .sidebar-close-btn {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            z-index: 25;
+            transition: background 0.2s;
+        }
+        .sidebar-close-btn:hover {
+            background-color: rgba(15, 23, 42, 0.85);
+        }
+
+        /* Container Putih yang melakukan Scroll di atas Gambar */
+        .sidebar-scroll-body {
+            position: relative;
+            z-index: 5;
+            flex: 1;
+            overflow-y: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            display: flex;
+            flex-direction: column;
+            background-color: transparent;
+        }
+        .sidebar-scroll-body::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Spacer agar konten putih tidak menutupi gambar utama di awal */
+        .sidebar-spacer {
+            height: 180px;
+            width: 100%;
+            pointer-events: none;
+            flex-shrink: 0;
+        }
+
+        /* Kartu Konten Putih TANPA Border Radius (Siku/Rata) */
+        .sidebar-white-card {
+            background-color: #ffffff;
+            border-radius: 0;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+            min-height: calc(100% - 180px);
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 24px;
+        }
+
+        /* Thumbnail Horizontal Scroll Container */
+        .thumbnail-scroll-container {
+            display: flex;
+            gap: 10px;
+            padding: 14px 20px 10px 20px;
+            overflow-x: auto;
+            border-bottom: 1px solid #e2e8f0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            flex-shrink: 0;
+            background-color: #ffffff;
+        }
+        .thumbnail-scroll-container::-webkit-scrollbar {
+            display: none;
+        }
+        .thumb-item {
+            width: 64px;
+            height: 48px;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-shrink: 0;
+            border: 2px solid transparent;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.2s ease;
+        }
+        .thumb-item.active {
+            border-color: #2563eb;
+            opacity: 1;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+            transform: scale(1.04);
+        }
+        .thumb-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .sidebar-content-body {
+            padding: 18px 20px;
+            background-color: #ffffff;
+        }
+
+        .sidebar-spec-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            background-color: #f8fafc;
+            padding: 12px;
+            border-radius: 16px;
+            margin: 16px 0;
+            border: 1px solid #f1f5f9;
+        }
+        .sidebar-spec-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 4px;
+        }
+        .sidebar-spec-icon-box {
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            background-color: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .sidebar-spec-title {
+            font-size: 10px;
+            color: #64748b;
+        }
+        .sidebar-spec-value {
+            font-size: 12px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .facility-tags-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .sidebar-facility-tag {
+            background-color: #f1f5f9;
+            color: #334155;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 6px 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .sidebar-agent-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8fafc;
+            padding: 12px;
+            border-radius: 16px;
+            margin-top: 20px;
+            border: 1px solid #e2e8f0;
+        }
+        .sidebar-agent-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .sidebar-footer-bar {
+            position: relative;
+            z-index: 10;
+            padding: 14px 20px;
+            background-color: #ffffff;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+        .sidebar-survey-btn {
+            flex: 1;
+            background-color: #eff6ff;
+            color: #2563eb;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sidebar-contact-btn {
+            flex: 1;
+            background-color: #2563eb;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 12px;
+            border-radius: 14px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            transition: background 0.2s;
+        }
+
+        /* Toast Notification Popup */
+        .toast-notification {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(15, 23, 42, 0.95);
+            color: #ffffff;
+            font-size: 12px;
+            padding: 10px 16px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.25);
+            z-index: 120;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+        .toast-notification.show {
+            opacity: 1;
+        }
+        .toast-icon {
+            color: #34d399;
+        }
+        
+        /* --- Tambahan CSS Simulasi KPR Modern --- */
+.kpr-simulation-box {
+    background: linear-gradient(135deg, #f8fafc, #eff6ff);
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 18px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+}
+.kpr-title-flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.kpr-title-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #dbeafe;
+    color: #2563eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+}
+.kpr-field-group {
+    margin-bottom: 12px;
+}
+.kpr-label-flex {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 4px;
+}
+.kpr-input, .kpr-range {
+    width: 100%;
+    padding: 8px 12px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+    outline: none;
+    transition: all 0.2s;
+}
+.kpr-input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+.kpr-range {
+    padding: 0;
+    height: 6px;
+    accent-color: #2563eb;
+    cursor: pointer;
+}
+.kpr-result-card {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    border-radius: 14px;
+    padding: 14px;
+    color: #ffffff;
+    margin-top: 14px;
+    text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+.kpr-result-card:hover {
+    transform: translateY(-2px);
+}
+.kpr-result-label {
+    font-size: 11px;
+    color: #bfdbfe;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+.kpr-result-value {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fde047;
+    letter-spacing: -0.01em;
+}
+.kpr-result-note {
+    font-size: 9px;
+    color: #93c5fd;
+    margin-top: 4px;
+}
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Device Container Frame -->
+    <div class="phone-container">
+        
+        <!-- Phone Status Bar -->
+        <div class="status-bar">
+            <span>09:41</span>
+            <div style="display: flex; align-items: center; gap: 8px; color: #ffffff;">
+                <i class="fa-solid fa-signal" style="font-size: 11px;"></i>
+                <i class="fa-solid fa-wifi" style="font-size: 11px;"></i>
+                <i class="fa-solid fa-battery-full" style="font-size: 13px;"></i>
+            </div>
+        </div>
+
+        <!-- Scrollable App Content Area -->
+        <div class="scroll-content">
+
+            <!-- Top Header -->
+            <header class="app-header">
+                <div class="logo-wrapper">
+                    <!-- Logo Icon -->
+                    <div class="logo-icon">
+                        <i class="fa-solid fa-house"></i>
+                    </div>
+                    <div>
+                        <h1 class="app-title">
+                            Mall<span>Properti</span>
+                        </h1>
+                        <p class="app-subtitle">Temukan Rumah Impianmu</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <!-- Notification Bell with Badge -->
+                    <button onclick="showToast('Tidak ada pemberitahuan baru')" class="bell-btn">
+                        <i class="fa-regular fa-bell" style="font-size: 16px;"></i>
+                        <span class="bell-badge"></span>
+                    </button>
+                    <!-- User Avatar -->
+                    <div class="avatar-container" onclick="showToast('Profil: Pengguna RumahKita')">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
+                    </div>
+                </div>
+            </header>
+
+            <!-- Search Bar Section -->
+            <div class="search-section">
+                <div class="search-box">
+                    <span class="search-icon-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <input type="text" id="searchInput" placeholder="Cari rumah, lokasi, atau tipe..." class="search-input">
+                </div>
+                <!-- Filter Button -->
+                <button onclick="openFilterModal()" class="filter-btn">
+                    <i class="fa-solid fa-sliders" style="font-size: 14px;"></i>
+                </button>
+            </div>
+
+            <!-- Hero Promotional Banner (Autoplay Slide Enabled) -->
+            <div class="banner-wrapper">
+                <div id="bannerContainer" class="banner-card" style="background: linear-gradient(to right, #1d4ed8, #2563eb, #06b6d4);">
+                    <!-- Background Decorative Shapes -->
+                    <div class="banner-bg-shape"></div>
+                    
+                    <div class="banner-content-flex">
+                        <div class="banner-text-side">
+                            <h2 id="bannerTitle" class="banner-title">
+                                Wujudkan <span style="color: #fde047;">Rumah Impian Anda</span>
+                            </h2>
+                            <p id="bannerSubtitle" class="banner-subtitle" style="color: #dbeafe;">
+                                Dengan mudah, aman dan terpercaya
+                            </p>
+                            <button id="bannerBtn" onclick="scrollToProjects()" class="banner-btn" style="background-color: #fbbf24; color: #0f172a;">
+                                <span>Mulai Cari</span>
+                                <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+                            </button>
+                        </div>
+                        <div class="banner-img-side">
+                            <img id="bannerImage" src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80" alt="Modern House" class="banner-img">
+                        </div>
+                    </div>
+                    
+                    <!-- Carousel Pagination Dots -->
+                    <div id="bannerDots" class="banner-dots">
+                        <span style="width: 20px; height: 6px; background-color: #ffffff; border-radius: 9999px; transition: all 0.3s;"></span>
+                        <span style="width: 6px; height: 6px; background-color: rgba(255,255,255,0.5); border-radius: 9999px; transition: all 0.3s;"></span>
+                        <span style="width: 6px; height: 6px; background-color: rgba(255,255,255,0.5); border-radius: 9999px; transition: all 0.3s;"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="categories-wrapper">
+                <div class="categories-grid">
+                    <!-- Beli Rumah -->
+                    <button onclick="filterCategory('beli')" class="category-btn">
+                        <div class="category-icon-box" style="background-color: #ecfdf5; color: #059669;">
+                            <i class="fa-solid fa-house-chimney"></i>
+                        </div>
+                        <span class="category-label">Beli Rumah</span>
+                    </button>
+                    <!-- Jual Rumah -->
+                    <button onclick="filterCategory('jual')" class="category-btn">
+                        <div class="category-icon-box" style="background-color: #eff6ff; color: #2563eb;">
+                            <i class="fa-solid fa-house-laptop"></i>
+                        </div>
+                        <span class="category-label">Jual Rumah</span>
+                    </button>
+                    <!-- Sewa Rumah -->
+                    <button onclick="filterCategory('sewa')" class="category-btn">
+                        <div class="category-icon-box" style="background-color: #fffbeb; color: #d97706;">
+                            <i class="fa-solid fa-key"></i>
+                        </div>
+                        <span class="category-label">Sewa Rumah</span>
+                    </button>
+                    <!-- Cari Lokasi -->
+                    <button onclick="filterCategory('lokasi')" class="category-btn">
+                        <div class="category-icon-box" style="background-color: #f3e8ff; color: #7c3aed;">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </div>
+                        <span class="category-label">Cari Lokasi</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Proyek Populer Section -->
+            <div id="projectsSection" class="projects-section">
+                <div class="section-header-flex">
+                    <div class="section-title-wrapper">
+                        <div class="section-icon-box">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                        <h3 class="section-title">Proyek Populer</h3>
+                    </div>
+                    <button onclick="showAllProjects()" class="see-all-btn">
+                        <span>Lihat Semua</span>
+                        <i class="fa-solid fa-arrow-right" style="font-size: 10px;"></i>
+                    </button>
+                </div>
+
+                <!-- Horizontal Scrollable Cards Container -->
+                <div class="horizontal-cards">
+                    
+                    <!-- Property Card 1 -->
+                    <div class="property-card" onclick="openPropertySidebar('AL Banjary Residences', 'Rp 850 Jt', 'Kota Banjarmasin', 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80', 'Terlaris', 'Terletak di kawasan mandiri premium Kota Banjarmasin dengan fasilitas lengkap, keamanan 24 jam, dan akses mudah ke pusat kota.', [
+                        'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80'
+                    ])">
+                        <div>
+                            <div class="property-img-wrapper">
+                                <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=400&q=80" alt="AL Banjary Residences">
+                                <span class="property-badge" style="background-color: #10b981;">
+                                    Terlaris
+                                </span>
+                            </div>
+                            <h4 class="property-name">AL Banjary Residences</h4>
+                            <p class="property-location">
+                                <i class="fa-solid fa-location-dot" style="color: #ef4444; font-size: 10px;"></i>
+                                Kota Banjarmasin
+                            </p>
+                        </div>
+                        <div class="property-footer">
+                            <div>
+                                <span class="property-price-label">Mulai dari</span>
+                                <span class="property-price">Rp 850 Jt</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); openPropertySidebar('AL Banjary Residences', 'Rp 850 Jt', 'Kota Banjarmasin', 'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80', 'Terlaris', 'Terletak di kawasan mandiri premium Kota Banjarmasin dengan fasilitas lengkap, keamanan 24 jam, dan akses mudah ke pusat kota.', [
+                                'https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=600&q=80'
+                            ])" class="property-action-btn">
+                                <i class="fa-solid fa-chevron-right" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Property Card 2 -->
+                    <div class="property-card" onclick="openPropertySidebar('Sunny Regency', 'Rp 720 Jt', 'Kota Banjarmasin', 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80', 'Terbaru', 'Hunian modern minimalis dengan tata ruang efisien serta pemandangan asri yang menenangkan jiwa.', [
+                        'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80'
+                    ])">
+                        <div>
+                            <div class="property-img-wrapper">
+                                <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=400&q=80" alt="D'Sunny Regency">
+                                <span class="property-badge" style="background-color: #3b82f6;">
+                                    Terbaru
+                                </span>
+                            </div>
+                            <h4 class="property-name">D'Sunny Regency</h4>
+                            <p class="property-location">
+                                <i class="fa-solid fa-location-dot" style="color: #ef4444; font-size: 10px;"></i>
+                                Kota Banjarmasin
+                            </p>
+                        </div>
+                        <div class="property-footer">
+                            <div>
+                                <span class="property-price-label">Mulai dari</span>
+                                <span class="property-price">Rp 720 Jt</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); openPropertySidebar('D\'Sunny Regency', 'Rp 720 Jt', 'Kota Banjarmasin', 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80', 'Terbaru', 'Hunian modern minimalis dengan tata ruang efisien serta pemandangan asri yang menenangkan jiwa.', [
+                                'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80'
+                            ])" class="property-action-btn">
+                                <i class="fa-solid fa-chevron-right" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Property Card 3 -->
+                    <div class="property-card" onclick="openPropertySidebar('Kareema Gardenia', 'Rp 600 Jt', 'Kota Banjar', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80', 'Promo', 'Kawasan hunian hijau bebas polusi di Kota Banjar dengan penawaran spesial cicilan DP ringan dan bonus kanopi.', [
+                        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=600&q=80',
+                        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'
+                    ])">
+                        <div>
+                            <div class="property-img-wrapper">
+                                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=400&q=80" alt="Kareema Gardenia">
+                                <span class="property-badge" style="background-color: #f59e0b;">
+                                    Promo
+                                </span>
+                            </div>
+                            <h4 class="property-name">Kareema Gardenia</h4>
+                            <p class="property-location">
+                                <i class="fa-solid fa-location-dot" style="color: #ef4444; font-size: 10px;"></i>
+                                Kota Banjar
+                            </p>
+                        </div>
+                        <div class="property-footer">
+                            <div>
+                                <span class="property-price-label">Mulai dari</span>
+                                <span class="property-price">Rp 600 Jt</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); openPropertySidebar('Kareema Gardenia', 'Rp 600 Jt', 'Kota Banjar', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80', 'Promo', 'Kawasan hunian hijau bebas polusi di Kota Banjar dengan penawaran spesial cicilan DP ringan dan bonus kanopi.', [
+                                'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600573472591-ee6b68d14c68?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=600&q=80',
+                                'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80'
+                            ])" class="property-action-btn">
+                                <i class="fa-solid fa-chevron-right" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Lower Trust Banner -->
+            <div class="trust-banner-wrapper">
+                <div class="trust-banner-box">
+                    <div class="trust-banner-blur"></div>
+                    <div class="trust-content-left">
+                        <div class="trust-icon-box">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div>
+                            <h4 class="trust-title">Transaksi Lebih Aman</h4>
+                            <p class="trust-desc">dengan Dukungan Tim Profesional</p>
+                        </div>
+                    </div>
+                    <button onclick="showTrustInfo()" class="trust-btn">
+                        Pelajari <i class="fa-solid fa-arrow-right" style="font-size: 9px; margin-left: 2px;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Content Category & Horizontal Card Scroll (Posisi Paling Bawah Halaman Home) -->
+            <div class="bottom-category-section">
+                <div class="section-header-flex" style="margin-bottom: 10px;">
+                    <div class="section-title-wrapper">
+                        <div class="section-icon-box" style="background-color: #fef3c7; color: #d97706;">
+                            <i class="fa-solid fa-layer-group"></i>
+                        </div>
+                        <h3 class="section-title">Kategori Pilihan</h3>
+                    </div>
+                </div>
+
+                <!-- Horizontal Scrollable Tab Category Header -->
+                <div class="tab-scroll-header">
+                    <button onclick="switchCategoryTab('all', this)" class="tab-chip-btn active">All</button>
+                    <button onclick="switchCategoryTab('termurah', this)" class="tab-chip-btn">Termurah</button>
+                    <button onclick="switchCategoryTab('termahal', this)" class="tab-chip-btn">Termahal</button>
+                    <button onclick="switchCategoryTab('terluas', this)" class="tab-chip-btn">Terluas</button>
+                    <button onclick="switchCategoryTab('terlaris', this)" class="tab-chip-btn">Terlaris</button>
+                    <button onclick="switchCategoryTab('rumah_lantai', this)" class="tab-chip-btn">Rumah Lantai</button>
+                </div>
+
+                <!-- Horizontal Scrollable Cards List per Tab Content -->
+                <div id="tabContentCardContainer" class="horizontal-cards">
+                    <!-- Cards diproduksi secara dinamis via JavaScript -->
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Navigation Bar (Sticky at bottom) -->
+        <nav class="bottom-nav">
+            <!-- Beranda Tab -->
+            <button onclick="switchTab('beranda')" id="nav-beranda" class="nav-btn active">
+                <i class="fa-solid fa-house nav-icon"></i>
+                <span class="nav-label-active">Beranda</span>
+            </button>
+            <!-- Favorit Tab -->
+            <button onclick="switchTab('favorit')" id="nav-favorit" class="nav-btn inactive">
+                <i class="fa-regular fa-heart nav-icon"></i>
+                <span class="nav-label-inactive">Favorit</span>
+            </button>
+            <!-- Pesan Tab with Badge -->
+            <button onclick="switchTab('pesan')" id="nav-pesan" class="nav-btn inactive" style="position: relative;">
+                <div style="position: relative;">
+                    <i class="fa-regular fa-comment-dots nav-icon"></i>
+                    <span style="position: absolute; top: -4px; right: -8px; background-color: #ef4444; color: white; font-size: 9px; font-weight: 700; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid white;">2</span>
+                </div>
+                <span class="nav-label-inactive">Pesan</span>
+            </button>
+            <!-- Lainnya Tab -->
+            <button onclick="switchTab('lainnya')" id="nav-lainnya" class="nav-btn inactive">
+                <i class="fa-solid fa-grip nav-icon"></i>
+                <span class="nav-label-inactive">Lainnya</span>
+            </button>
+        </nav>
+
+        <!-- Modern Sidebar Drawer Overlay -->
+        <div id="propertySidebar" class="sidebar-overlay" onclick="closePropertySidebar()">
+            <div class="sidebar-panel" onclick="event.stopPropagation()">
+                
+                <!-- Background Image Fix di Belakang dengan Efek Animasi Gelap saat Scroll -->
+                <div class="sidebar-bg-header">
+                    <img id="sidebarImg" src="" alt="Main Property Image">
+                    <div id="sidebarDarkOverlay" class="sidebar-dark-overlay"></div>
+                </div>
+
+                <button onclick="closePropertySidebar()" class="sidebar-close-btn">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+
+                <!-- Container Putih yang melakukan Scroll di atas Gambar (Tanpa Border Radius) -->
+                <div id="sidebarScrollBody" class="sidebar-scroll-body" onscroll="handleSidebarScroll(this)">
+                    <div class="sidebar-spacer"></div>
+                    
+                    <div class="sidebar-white-card">
+                        <!-- 5 Horizontal Scrollable Thumbnails -->
+                        <div id="thumbnailContainer" class="thumbnail-scroll-container">
+                            <!-- Dynamic Thumbnails Rendered Here -->
+                        </div>
+                        
+                        <div class="sidebar-content-body">
+                            <div style="margin-bottom: 12px;">
+                                <span id="sidebarBadge" style="background-color: #10b981; color: white; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 6px;">Terlaris</span>
+                                <h2 id="sidebarTitle" style="font-size: 16px; font-weight: 800; color: #0f172a; margin-top: 8px; line-height: 1.3;">Nama Properti</h2>
+                                <p id="sidebarLocation" style="font-size: 11px; color: #64748b; margin-top: 4px; display: flex; align-items: center; gap: 4px;">
+                                    <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> Lokasi
+                                </p>
+                            </div>
+
+                            <div style="background-color: #eff6ff; padding: 10px 14px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                                <span style="font-size: 11px; color: #475569; font-weight: 500;">Harga Penawaran</span>
+                                <span id="sidebarPrice" style="font-size: 15px; font-weight: 800; color: #2563eb;">Rp 0</span>
+                            </div>
+
+                            <!-- Spesifikasi Grid Sidebar -->
+                            <h3 style="font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 8px;">Spesifikasi Utama</h3>
+                            <div class="sidebar-spec-grid">
+                                <div class="sidebar-spec-item">
+                                    <div class="sidebar-spec-icon-box"><i class="fa-solid fa-bed"></i></div>
+                                    <div>
+                                        <span class="sidebar-spec-title">Kamar Tidur</span>
+                                        <div class="sidebar-spec-value">3 Kamar</div>
+                                    </div>
+                                </div>
+                                <div class="sidebar-spec-item">
+                                    <div class="sidebar-spec-icon-box"><i class="fa-solid fa-bath"></i></div>
+                                    <div>
+                                        <span class="sidebar-spec-title">Kamar Mandi</span>
+                                        <div class="sidebar-spec-value">2 Kamar</div>
+                                    </div>
+                                </div>
+                                <div class="sidebar-spec-item">
+                                    <div class="sidebar-spec-icon-box"><i class="fa-solid fa-ruler-combined"></i></div>
+                                    <div>
+                                        <span class="sidebar-spec-title">Luas Tanah</span>
+                                        <div class="sidebar-spec-value">120 m²</div>
+                                    </div>
+                                </div>
+                                <div class="sidebar-spec-item">
+                                    <div class="sidebar-spec-icon-box"><i class="fa-solid fa-car"></i></div>
+                                    <div>
+                                        <span class="sidebar-spec-title">Carport</span>
+                                        <div class="sidebar-spec-value">1 Mobil</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Deskripsi Singkat -->
+                            <h3 style="font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 14px; margin-bottom: 6px;">Deskripsi</h3>
+                            <p id="sidebarDesc" style="font-size: 11px; color: #475569; line-height: 1.5;">Deskripsi rinci mengenai fasilitas, lingkungan, serta spesifikasi fisik properti.</p>
+
+                            <!-- Fasilitas Properti -->
+                            <h3 style="font-size: 13px; font-weight: 700; color: #0f172a; margin-top: 14px; margin-bottom: 6px;">Fasilitas</h3>
+                            <div class="facility-tags-flex">
+                                <span class="sidebar-facility-tag"><i class="fa-solid fa-shield-halved" style="color: #2563eb;"></i> Security 24 Jam</span>
+                                <span class="sidebar-facility-tag"><i class="fa-solid fa-water-ladder" style="color: #06b6d4;"></i> Kolam Renang</span>
+                                <span class="sidebar-facility-tag"><i class="fa-solid fa-wifi" style="color: #10b981;"></i> Akses Internet</span>
+                            </div>
+                            
+                            <!-- Simulasi Cicilan KPR Section -->
+<div class="kpr-simulation-box">
+    <div class="kpr-title-flex">
+        <div class="kpr-title-icon">
+            <i class="fa-solid fa-calculator"></i>
+        </div>
+        <div>
+            <h3 style="font-size: 13px; font-weight: 700; color: #0f172a;">Simulasi Cicilan KPR</h3>
+            <p style="font-size: 10px; color: #64748b;">Hitung estimasi angsuran bulanan Anda</p>
+        </div>
+    </div>
+    
+    <!-- Harga Properti (Auto Sinkron) -->
+    <div class="kpr-field-group">
+        <div class="kpr-label-flex">
+            <span>Harga Properti (Rp)</span>
+        </div>
+        <input type="text" id="kprHarga" class="kpr-input" oninput="calculateKPR()" placeholder="Contoh: 850000000">
+    </div>
+    
+    <!-- Uang Muka (DP) -->
+    <div class="kpr-field-group">
+        <div class="kpr-label-flex">
+            <span>Uang Muka / DP (<span id="dpPercentLabel">20</span>%)</span>
+            <span id="dpNominalLabel" style="color: #2563eb; font-weight: 700;">Rp 170 Juta</span>
+        </div>
+        <input type="range" id="kprDpRange" class="kpr-range" min="10" max="50" value="20" oninput="updateDpAndCalculate()">
+    </div>
+    
+    <!-- Jangka Waktu (Tenor) -->
+    <div class="kpr-field-group">
+        <div class="kpr-label-flex">
+            <span>Jangka Waktu (Tenor)</span>
+            <span id="tenorLabel" style="color: #2563eb; font-weight: 700;">15 Tahun</span>
+        </div>
+        <input type="range" id="kprTenorRange" class="kpr-range" min="1" max="30" value="15" oninput="updateTenorAndCalculate()">
+    </div>
+    
+    <!-- Suku Bunga -->
+    <div class="kpr-field-group" style="margin-bottom: 0;">
+        <div class="kpr-label-flex">
+            <span>Suku Bunga (% / tahun)</span>
+            <span id="bungaLabel" style="color: #2563eb; font-weight: 700;">7.5%</span>
+        </div>
+        <input type="range" id="kprBungaRange" class="kpr-range" min="3" max="15" step="0.5" value="7.5" oninput="updateBungaAndCalculate()">
+    </div>
+    
+    <!-- Hasil Angsuran Bulanan Beranimasi -->
+    <div class="kpr-result-card">
+        <div class="kpr-result-label">Estimasi Jumlah Angsuran / Bulan</div>
+        <div id="kprResultValue" class="kpr-result-value">Rp 0 / bln</div>
+        <div class="kpr-result-note">*Simulasi ini bersifat estimasi, suku bunga dapat berubah sesuai kebijakan bank.</div>
+    </div>
+</div>
+
+                            <!-- Agen Marketing Card -->
+                            <div class="sidebar-agent-card">
+                                <div style="display: flex; align-items: center; gap: 10px;">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" alt="Agent" class="sidebar-agent-avatar">
+                                    <div>
+                                        <h4 style="font-size: 12px; font-weight: 700; color: #0f172a;">Rizky Pratama</h4>
+                                        <p style="font-size: 10px; color: #64748b;">Agen Properti Resmi</p>
+                                    </div>
+                                </div>
+                                <button onclick="showToast('Membuka kontak agen...')" style="background-color: #ecfdf5; color: #059669; border: none; width: 34px; height: 34px; border-radius: 50%; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-brands fa-whatsapp"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Footer Sticky inside Sidebar -->
+                <div class="sidebar-footer-bar">
+                    <button onclick="showToast('Jadwal survey berhasil dikirim!')" class="sidebar-survey-btn">Survey</button>
+                    <button onclick="showToast('Menghubungi Agen Properti...')" class="sidebar-contact-btn">Hubungi</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification Popup -->
+        <div id="toastNotification" class="toast-notification">
+            <i class="fa-solid fa-circle-check toast-icon"></i>
+            <span id="toastMessage">Pesan informasi</span>
+        </div>
+
+    </div>
+
+    <!-- JavaScript Interactivity & Sidebar Gallery Scroll -->
+    <script>
+        // Data Banner Slide Otomatis
+        const slides = [
+            {
+                title: 'Wujudkan <span style="color: #fde047;">Rumah Impian Anda</span>',
+                subtitle: 'Dengan mudah, aman dan terpercaya',
+                image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=300&q=80',
+                background: 'linear-gradient(to right, #1d4ed8, #2563eb, #06b6d4)',
+                boxShadow: '0 20px 25px -5px rgba(37, 99, 235, 0.2)',
+                subtitleColor: '#dbeafe',
+                btnBg: '#fbbf24',
+                btnText: '#0f172a'
+            },
+            {
+                title: 'Lingkungan Asri <span style="color: #a7f3d0;">& Nyaman</span>',
+                subtitle: 'Hunian ramah lingkungan keluarga ceria',
+                image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=300&q=80',
+                background: 'linear-gradient(to right, #047857, #059669, #14b8a6)',
+                boxShadow: '0 20px 25px -5px rgba(5, 150, 105, 0.2)',
+                subtitleColor: '#a7f3d0',
+                btnBg: '#ffffff',
+                btnText: '#065f46'
+            },
+            {
+                title: 'Kredit KPR <span style="color: #0f172a;">Bunga Super Ringan</span>',
+                subtitle: 'Solusi promo properti bulan ini',
+                image: 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=300&q=80',
+                background: 'linear-gradient(to right, #d97706, #f59e0b, #fbbf24)',
+                boxShadow: '0 20px 25px -5px rgba(245, 158, 11, 0.2)',
+                subtitleColor: '#451a03',
+                btnBg: '#0f172a',
+                btnText: '#ffffff'
+            }
+        ];
+
+        let currentSlide = 0;
+
+        function updateSlide() {
+            const containerEl = document.getElementById('bannerContainer');
+            const titleEl = document.getElementById('bannerTitle');
+            const subtitleEl = document.getElementById('bannerSubtitle');
+            const imageEl = document.getElementById('bannerImage');
+            const btnEl = document.getElementById('bannerBtn');
+            const dotsEl = document.getElementById('bannerDots');
+
+            if (!containerEl || !titleEl || !subtitleEl || !imageEl || !dotsEl) return;
+
+            titleEl.style.opacity = '0';
+            subtitleEl.style.opacity = '0';
+            imageEl.style.opacity = '0';
+
+            setTimeout(() => {
+                const slide = slides[currentSlide];
+
+                containerEl.style.background = slide.background;
+                containerEl.style.boxShadow = slide.boxShadow;
+                
+                titleEl.innerHTML = slide.title;
+                subtitleEl.textContent = slide.subtitle;
+                subtitleEl.style.color = slide.subtitleColor;
+                imageEl.src = slide.image;
+                btnEl.style.backgroundColor = slide.btnBg;
+                btnEl.style.color = slide.btnText;
+
+                titleEl.style.opacity = '1';
+                subtitleEl.style.opacity = '1';
+                imageEl.style.opacity = '1';
+
+                let dotsHtml = '';
+                for (let i = 0; i < slides.length; i++) {
+                    if (i === currentSlide) {
+                        dotsHtml += `<span style="width: 20px; height: 6px; background-color: #ffffff; border-radius: 9999px; transition: all 0.3s;"></span>`;
+                    } else {
+                        dotsHtml += `<span style="width: 6px; height: 6px; background-color: rgba(255,255,255,0.5); border-radius: 9999px; transition: all 0.3s;"></span>`;
+                    }
+                }
+                dotsEl.innerHTML = dotsHtml;
+            }, 150);
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            updateSlide();
+        }
+
+        setInterval(nextSlide, 3500);
+
+        // Data Properti Bottom Tab Categories (All, Termurah, Termahal, Terluas, Terlaris, Rumah Lantai)
+        const tabCategoryData = {
+            all: [
+                {
+                    title: "Graha Harmony Minimalis",
+                    price: "Rp 350 Jt",
+                    location: "Banjarmasin Barat",
+                    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=400&q=80",
+                    badge: "Subsidi",
+                    badgeColor: "#10b981",
+                    desc: "Hunian asri nan harmonis dengan tipe minimalis, sangat cocok untuk keluarga muda baru menikah.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Grand Royale Villa",
+                    price: "Rp 2,8 Miliar",
+                    location: "Banjarmasin Selatan",
+                    img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=400&q=80",
+                    badge: "Mewah",
+                    badgeColor: "#8b5cf6",
+                    desc: "Villa mewah kelas atas dengan kolam renang pribadi, konsep smart home dan sistem keamanan 24 jam.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Citra Land Estate",
+                    price: "Rp 1,2 Miliar",
+                    location: "Banjarmasin Timur",
+                    img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400&q=80",
+                    badge: "Terluas",
+                    badgeColor: "#ec4899",
+                    desc: "Properti berukuran sangat luas dengan halaman hijau rindang dan udara segar.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80",
+                        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Twin Sky Tower House",
+                    price: "Rp 1,4 Miliar",
+                    location: "Banjarmasin Tengah",
+                    img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80",
+                    badge: "2 Lantai",
+                    badgeColor: "#6366f1",
+                    desc: "Rumah megah 2 lantai berdesain scandinavian modern di kawasan perkotaan.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ],
+            termurah: [
+                {
+                    title: "Pondok Indah Asri",
+                    price: "Rp 280 Jt",
+                    location: "Banjarbaru Utara",
+                    img: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?auto=format&fit=crop&w=400&q=80",
+                    badge: "Termurah",
+                    badgeColor: "#06b6d4",
+                    desc: "Rumah murah siap huni dengan skema DP 0% dan cicilan super ringan.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Graha Harmony Minimalis",
+                    price: "Rp 350 Jt",
+                    location: "Banjarmasin Barat",
+                    img: "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=400&q=80",
+                    badge: "Subsidi",
+                    badgeColor: "#10b981",
+                    desc: "Hunian subsidi pemerintah dengan mutu bangunan terbaik di lokasinya.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Permata Asri Permai",
+                    price: "Rp 390 Jt",
+                    location: "Kota Banjar",
+                    img: "https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?auto=format&fit=crop&w=400&q=80",
+                    badge: "Harga Promo",
+                    badgeColor: "#f59e0b",
+                    desc: "Perumahan promo awal tahun dengan diskon tunai puluhan juta rupiah.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ],
+            termahal: [
+                {
+                    title: "The Mansion Riverview",
+                    price: "Rp 3,5 Miliar",
+                    location: "Pusat Kota",
+                    img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400&q=80",
+                    badge: "Exclusive",
+                    badgeColor: "#ef4444",
+                    desc: "Mansion megah tepi sungai dengan tata ruang arsitektur Eropa klasik bernilai seni tinggi.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Grand Royale Villa",
+                    price: "Rp 2,8 Miliar",
+                    location: "Banjarmasin Selatan",
+                    img: "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=400&q=80",
+                    badge: "Mewah",
+                    badgeColor: "#8b5cf6",
+                    desc: "Villa mewah kelas atas dengan kolam renang pribadi dan carport untuk 4 mobil.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ],
+            terluas: [
+                {
+                    title: "Citra Land Estate",
+                    price: "Rp 1,2 Miliar",
+                    location: "Banjarmasin Timur",
+                    img: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400&q=80",
+                    badge: "Luas 320m²",
+                    badgeColor: "#ec4899",
+                    desc: "Properti berukuran tanah 320m² dilengkapi halaman depan dan belakang sangat luas.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Green Park Residence",
+                    price: "Rp 980 Jt",
+                    location: "Banjarbaru Barat",
+                    img: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=400&q=80",
+                    badge: "Luas 250m²",
+                    badgeColor: "#3b82f6",
+                    desc: "Lahan tanah dan bangunan seluas 250m² siap kembang untuk penambahan bangunan.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ],
+            terlaris: [
+                {
+                    title: "AL Banjary Residences",
+                    price: "Rp 850 Jt",
+                    location: "Kota Banjarmasin",
+                    img: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=400&q=80",
+                    badge: "Terlaris #1",
+                    badgeColor: "#10b981",
+                    desc: "Kawasan mandiri premium paling diminati pencari rumah tahun ini.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Bukit Blossom House",
+                    price: "Rp 650 Jt",
+                    location: "Banjarbaru Selatan",
+                    img: "https://images.unsplash.com/photo-1592595896551-12b371d546d5?auto=format&fit=crop&w=400&q=80",
+                    badge: "Top Seller",
+                    badgeColor: "#f59e0b",
+                    desc: "Unit terbatas! Penjualan paling pesat karena dekat pusat belanja dan tol.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1592595896551-12b371d546d5?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ],
+            rumah_lantai: [
+                {
+                    title: "Twin Sky Tower House",
+                    price: "Rp 1,4 Miliar",
+                    location: "Banjarmasin Tengah",
+                    img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=400&q=80",
+                    badge: "2 Lantai",
+                    badgeColor: "#6366f1",
+                    desc: "Rumah tingkat 2 lantai berdesain modern dengan balkoni luas.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=600&q=80"
+                    ]
+                },
+                {
+                    title: "Modern Duplex Terrace",
+                    price: "Rp 1,1 Miliar",
+                    location: "Kota Banjar",
+                    img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=400&q=80",
+                    badge: "3 Lantai",
+                    badgeColor: "#0284c7",
+                    desc: "Rumah 3 lantai dilengkapi rooftop garden indah untuk bersantai.",
+                    gallery: [
+                        "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=600&q=80"
+                    ]
+                }
+            ]
+        };
+
+        // Render Tab Category Content Cards secara dinamis
+        function renderCategoryCards(categoryKey) {
+            const container = document.getElementById('tabContentCardContainer');
+            if (!container) return;
+
+            const items = tabCategoryData[categoryKey] || tabCategoryData['all'];
+            let html = '';
+
+            items.forEach(item => {
+                const itemGalleryJSON = JSON.stringify(item.gallery).replace(/"/g, '&quot;');
+                html += `
+                    <div class="property-card" onclick="openPropertySidebar('${item.title}', '${item.price}', '${item.location}', '${item.img}', '${item.badge}', '${item.desc}', ${itemGalleryJSON})">
+                        <div>
+                            <div class="property-img-wrapper">
+                                <img src="${item.img}" alt="${item.title}">
+                                <span class="property-badge" style="background-color: ${item.badgeColor};">
+                                    ${item.badge}
+                                </span>
+                            </div>
+                            <h4 class="property-name">${item.title}</h4>
+                            <p class="property-location">
+                                <i class="fa-solid fa-location-dot" style="color: #ef4444; font-size: 10px;"></i>
+                                ${item.location}
+                            </p>
+                        </div>
+                        <div class="property-footer">
+                            <div>
+                                <span class="property-price-label">Mulai dari</span>
+                                <span class="property-price">${item.price}</span>
+                            </div>
+                            <button onclick="event.stopPropagation(); openPropertySidebar('${item.title}', '${item.price}', '${item.location}', '${item.img}', '${item.badge}', '${item.desc}', ${itemGalleryJSON})" class="property-action-btn">
+                                <i class="fa-solid fa-chevron-right" style="font-size: 12px;"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Ganti Tab Kategori saat diklik
+        function switchCategoryTab(categoryKey, btnEl) {
+            const allChips = document.querySelectorAll('.tab-chip-btn');
+            allChips.forEach(chip => chip.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+            renderCategoryCards(categoryKey);
+        }
+
+        // Panggil render default saat dokumen selesai dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoryCards('all');
+        });
+
+        // Fungsi Animasi Gelap saat Scroll di Sidebar Detail
+        function handleSidebarScroll(el) {
+            const scrollTop = el.scrollTop;
+            const darkOverlay = document.getElementById('sidebarDarkOverlay');
+            const maxScroll = 120;
+            let opacity = Math.min(scrollTop / maxScroll, 0.45);
+            if (darkOverlay) {
+                darkOverlay.style.backgroundColor = `rgba(0, 0, 0, ${opacity})`;
+            }
+        }
+
+        // Fungsi Membuka Sidebar Detail Properti
+        function openPropertySidebar(title, price, location, defaultImgUrl, badgeText, description, images = []) {
+            const sidebar = document.getElementById('propertySidebar');
+            const sidebarImg = document.getElementById('sidebarImg');
+            const thumbContainer = document.getElementById('thumbnailContainer');
+            const scrollBody = document.getElementById('sidebarScrollBody');
+            const darkOverlay = document.getElementById('sidebarDarkOverlay');
+
+            if (scrollBody) scrollBody.scrollTop = 0;
+            if (darkOverlay) darkOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+
+            document.getElementById('sidebarTitle').textContent = title;
+            document.getElementById('sidebarPrice').textContent = price;
+            document.getElementById('sidebarLocation').innerHTML = `<i class="fa-solid fa-location-dot" style="color: #ef4444;"></i> ${location}`;
+            document.getElementById('sidebarBadge').textContent = badgeText;
+            document.getElementById('sidebarDesc').textContent = description;
+
+            sidebarImg.src = defaultImgUrl;
+
+            thumbContainer.innerHTML = '';
+            if (images && images.length > 0) {
+                images.forEach((imgUrl, index) => {
+                    const thumbDiv = document.createElement('div');
+                    thumbDiv.className = `thumb-item ${index === 0 ? 'active' : ''}`;
+                    thumbDiv.onclick = function () {
+                        sidebarImg.style.opacity = '0.3';
+                        setTimeout(() => {
+                            sidebarImg.src = imgUrl;
+                            sidebarImg.style.opacity = '1';
+                        }, 120);
+
+                        const allThumbs = thumbContainer.querySelectorAll('.thumb-item');
+                        allThumbs.forEach(t => t.classList.remove('active'));
+                        thumbDiv.classList.add('active');
+                    };
+
+                    const imgTag = document.createElement('img');
+                    imgTag.src = imgUrl;
+                    imgTag.alt = `Thumbnail ${index + 1}`;
+
+                    thumbDiv.appendChild(imgTag);
+                    thumbContainer.appendChild(thumbDiv);
+                });
+            }
+
+            sidebar.classList.add('active');
+        }
+
+        // Fungsi Menutup Sidebar Detail Properti
+        function closePropertySidebar() {
+            const sidebar = document.getElementById('propertySidebar');
+            sidebar.classList.remove('active');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toastNotification');
+            const toastMsg = document.getElementById('toastMessage');
+            toastMsg.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function openFilterModal() {
+            showToast('Membuka menu filter pencarian...');
+        }
+
+        function scrollToProjects() {
+            const section = document.getElementById('projectsSection');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function filterCategory(category) {
+            const categoryNames = {
+                'beli': 'Beli Rumah',
+                'jual': 'Jual Rumah',
+                'sewa': 'Sewa Rumah',
+                'lokasi': 'Cari Lokasi'
+            };
+            showToast('Menampilkan kategori: ' + (categoryNames[category] || category));
+        }
+
+        function showAllProjects() {
+            showToast('Menampilkan semua proyek populer');
+        }
+
+        function switchTab(tabName) {
+            const tabs = ['beranda', 'favorit', 'pesan', 'lainnya'];
+            tabs.forEach(tab => {
+                const btn = document.getElementById('nav-' + tab);
+                if (btn) {
+                    const icon = btn.querySelector('i');
+                    const span = btn.querySelector('span:last-child');
+                    if (tab === tabName) {
+                        btn.className = 'nav-btn active';
+                        if (icon) {
+                            icon.className = icon.className.replace('fa-regular', 'fa-solid');
+                        }
+                        if (span) {
+                            span.className = 'nav-label-active';
+                        }
+                    } else {
+                        btn.className = 'nav-btn inactive';
+                        if (icon) {
+                            icon.className = icon.className.replace('fa-solid', 'fa-regular');
+                        }
+                        if (span) {
+                            span.className = 'nav-label-inactive';
+                        }
+                    }
+                }
+            });
+            showToast('Beralih ke tab ' + tabName.charAt(0).toUpperCase() + tabName.slice(1));
+        }
+
+        function showTrustInfo() {
+            showToast('Informasi: Transaksi aman dengan dukungan tim profesional');
+        }
+        
+        // --- Fungsi Kalkulasi & Interaksi Simulasi KPR ---
+
+// Helper Format ke Rupiah
+function formatRupiahNum(number) {
+    if (isNaN(number)) return 'Rp 0';
+    return 'Rp ' + Math.round(number).toLocaleString('id-ID');
+}
+
+// Konversi teks harga properti (misal "Rp 850 Jt" atau "Rp 1,4 Miliar") ke angka integer
+function parsePriceToNumber(priceStr) {
+    if (!priceStr) return 850000000;
+    let cleanStr = priceStr.toLowerCase().replace(/[^0-9,]/g, '').replace(',', '.');
+    let num = parseFloat(cleanStr) || 850;
+    
+    if (priceStr.toLowerCase().includes('miliar') || priceStr.toLowerCase().includes('m')) {
+        return num * 1000000000;
+    } else if (priceStr.toLowerCase().includes('jt') || priceStr.toLowerCase().includes('juta')) {
+        return num * 1000000;
+    }
+    return num > 10000 ? num : num * 1000000;
+}
+
+function updateDpAndCalculate() {
+    const dpPercent = document.getElementById('kprDpRange').value;
+    document.getElementById('dpPercentLabel').textContent = dpPercent;
+    calculateKPR();
+}
+
+function updateTenorAndCalculate() {
+    const tenor = document.getElementById('kprTenorRange').value;
+    document.getElementById('tenorLabel').textContent = tenor + ' Tahun';
+    calculateKPR();
+}
+
+function updateBungaAndCalculate() {
+    const bunga = document.getElementById('kprBungaRange').value;
+    document.getElementById('bungaLabel').textContent = bunga + '%';
+    calculateKPR();
+}
+
+// Rumus Utama Kalkulasi Cicilan KPR Anuitas
+function calculateKPR() {
+    const hargaInputStr = document.getElementById('kprHarga').value.replace(/[^0-9]/g, '');
+    const hargaProperty = parseFloat(hargaInputStr) || 0;
+    
+    const dpPercent = parseFloat(document.getElementById('kprDpRange').value) || 20;
+    const tenorTahun = parseFloat(document.getElementById('kprTenorRange').value) || 15;
+    const bungaPerTahun = parseFloat(document.getElementById('kprBungaRange').value) || 7.5;
+    
+    const jumlahDp = hargaProperty * (dpPercent / 100);
+    document.getElementById('dpNominalLabel').textContent = formatRupiahNum(jumlahDp);
+    
+    const pokokPlafon = hargaProperty - jumlahDp;
+    const bungaPerBulan = (bungaPerTahun / 100) / 12;
+    const jumlahBulan = tenorTahun * 12;
+    
+    let angsuranPerBulan = 0;
+    if (bungaPerBulan === 0) {
+        angsuranPerBulan = pokokPlafon / jumlahBulan;
+    } else {
+        angsuranPerBulan = (pokokPlafon * bungaPerBulan * Math.pow(1 + bungaPerBulan, jumlahBulan)) / (Math.pow(1 + bungaPerBulan, jumlahBulan) - 1);
+    }
+    
+    if (isNaN(angsuranPerBulan) || angsuranPerBulan < 0) {
+        angsuranPerBulan = 0;
+    }
+    
+    const resultEl = document.getElementById('kprResultValue');
+    // Efek transisi smooth saat nilai berubah
+    resultEl.style.transform = 'scale(1.05)';
+    resultEl.textContent = formatRupiahNum(angsuranPerBulan) + ' /bln';
+    setTimeout(() => {
+        resultEl.style.transform = 'scale(1)';
+    }, 150);
+}
+    </script>
+</body>
+</html>
